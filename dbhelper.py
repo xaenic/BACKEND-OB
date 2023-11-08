@@ -5,11 +5,11 @@ from mysql.connector import connect
 
 def db_connect()->object:
     return connect(
-        host="db4free.net",
-        user="bilatkaba",
-        port=3306,
-        password="bilatkayat",
-        database="final_project1"
+        host="localhost", #db4free.net #port 3306 username 'bilatkaba  pass: bilatkayat
+        user="root", 
+        
+        password="",
+        database="final_project"
     )
     
 def doProcess(sql:str)->bool:
@@ -18,16 +18,20 @@ def doProcess(sql:str)->bool:
     cursor.execute(sql)
     db.commit()
     return True if cursor.rowcount>0 else False
-    
+
+
+
+
 def getProcess(sql:str)->list:
     db:object = db_connect()
     cursor:object = db.cursor(dictionary=True)
     cursor.execute(sql)
     return cursor.fetchall()
 
-def getall(table:str,page:int)->list:
-    offset:int = (page - 1) * 10
-    sql:str = f"SELECT * FROM `{table}` LIMIT 10 OFFSET {offset}"
+def getall(table:str,page:int,limit)->list:
+    offset:int = (page - 1) * limit
+    print(limit)
+    sql:str = f"SELECT * FROM `{table}` LIMIT {limit} OFFSET {offset}"
     print(sql)
     return getProcess(sql)
 
@@ -85,6 +89,7 @@ def updaterecord(table:str,**kwargs)->bool:
         fld.append(f"`{flds[i]}`='{vals[i]}'")
     params:str = ",".join(fld)
     sql:str = f"UPDATE `{table}` SET {params} WHERE `{flds[0]}`='{vals[0]}'"
+    print(sql)
     return doProcess(sql)
     
 def deleterecord(table:str,**kwargs)->bool:

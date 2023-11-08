@@ -14,10 +14,10 @@ def wss(table,id):
     ok = getrecord(table.lower(),id=int(id))
     resp = { 'status': 200, 'results':  ok}
     return jsonify(resp)
-@app.route('/<table>/<page>')
-def customers(table,page):
+@app.route('/<table>/<page>/<limit>')
+def customers(table,page,limit):
 
-    ok = getall(table.lower(),int(page))
+    ok = getall(table.lower(),int(page),int(limit))
     resp = { 'status': 200,'page':page, 'results':  ok}
     return jsonify(resp)
 @app.route('/search/<type>/<key>')
@@ -54,6 +54,7 @@ def edit(table,id):
     resp = { 'status': 200,
         'results': updaterecord(table.lower(),id=id,**form_data) }
     return jsonify(resp)
+
 @app.route('/test')
 def asdd():
     delete('ordered_items',c_id=1)
@@ -63,8 +64,9 @@ def asd(table,id):
     delete('ordered_items',c_id=int(id))
     deleterecord('orders',c_id=int(id))
     deleterecord('cart',c_id=int(id))
-
     deleterecord('reviews',c_id=int(id))
+    if 'items' in table.lower():
+        deleterecord('ordered_items', i_id=int(id))
     resp = { 'status': 200,
         'results': deleterecord(table.lower(),id=int(id)) }
     return jsonify(resp)
