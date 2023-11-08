@@ -5,10 +5,11 @@ from mysql.connector import connect
 
 def db_connect()->object:
     return connect(
-        host="127.0.0.1",
-        user="root",
-        password="",
-        database="final_project"
+        host="db4free.net",
+        user="bilatkaba",
+        port=3306,
+        password="bilatkayat",
+        database="final_project1"
     )
     
 def doProcess(sql:str)->bool:

@@ -11,13 +11,13 @@ def hello_world():
 
 @app.route('/get/<table>/<id>')
 def wss(table,id):
-    ok = getrecord(table,id=int(id))
+    ok = getrecord(table.lower(),id=int(id))
     resp = { 'status': 200, 'results':  ok}
     return jsonify(resp)
 @app.route('/<table>/<page>')
 def customers(table,page):
 
-    ok = getall(table,int(page))
+    ok = getall(table.lower(),int(page))
     resp = { 'status': 200,'page':page, 'results':  ok}
     return jsonify(resp)
 @app.route('/search/<type>/<key>')
@@ -45,14 +45,14 @@ def asdaw(table):
     
 
     resp = { 'status': 200,
-        'results': addrecord(table,**form_data) }
+        'results': addrecord(table.lower(),**form_data) }
     return jsonify(resp)
 @app.route('/edit/<table>/<id>',methods=['POST'])
 def edit(table,id):
     form_data = request.get_json()
     
     resp = { 'status': 200,
-        'results': updaterecord(table,id=id,**form_data) }
+        'results': updaterecord(table.lower(),id=id,**form_data) }
     return jsonify(resp)
 @app.route('/test')
 def asdd():
@@ -66,7 +66,7 @@ def asd(table,id):
 
     deleterecord('reviews',c_id=int(id))
     resp = { 'status': 200,
-        'results': deleterecord(table,id=int(id)) }
+        'results': deleterecord(table.lower(),id=int(id)) }
     return jsonify(resp)
 
 @app.route('/reviews/<id>')
